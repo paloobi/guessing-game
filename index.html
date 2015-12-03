@@ -4,24 +4,35 @@
   <head>
     <meta charset="utf-8">
     <title>Guess the Number!</title>
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="style.css">
   </head>
 
   <body>
 
-    <h1>Can you guess the number?</h1>
+    <div id="container">
 
-    <form>
-      <p>Guess a number between 1 and 100.</p>
-      <input type="text" placeholder="Guess a Number (1-100)">
-      <button id="guess">Guess</button>
-    </form>
+      <h1 class="text-center">Guess the Number!</h1>
 
-    <form>
-      <button id="tryAgain">Try Again?</button>
-      <button id="hint">Hint</button>
-      <button id="giveUp">Give Up</button>
-    </form>
+      <form class="text-center">
+        <p>Guess a number between 1 and 100.</p>
+        <div class="row">
+          <input type="text" placeholder="Guess a Number (1-100)">
+        </div>
+        <div class="row">
+          <div class="col-md-4"></div>
+          <button class="col-md-4 btn btn-success" id="guess">Guess</button>
+          <div class="col-md-4"></div>
+        </div>
+      </form>
+
+      <form class="text-center row">
+        <button class="col-md-4 btn btn-info" id="tryAgain">Try Again?</button>
+        <button class="col-md-4 btn btn-warning" id="hint">Hint</button>
+        <button class="col-md-4 btn btn-danger" id="giveUp">Give Up</button>
+      </form>
+
+    </div>
 
   </body>
 
