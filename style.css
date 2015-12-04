@@ -1,3 +1,14 @@
+body {
+background: linear-gradient(
+  to bottom,
+  #B0E0E6,
+  #B0E0E6 50%,
+  #d8f0f3 50%,
+  #d8f0f3
+);
+background-size: 100% 30px;
+}
+
 .box {
   background-color: white;
   border: 1px solid #eee;
@@ -13,6 +24,10 @@
 .optionsBox {
   min-height: 100px;
   min-width: 200px;
+}
+
+.optionsBox .btn {
+  margin: 20px auto;
 }
 
 input button {
