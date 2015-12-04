@@ -10,27 +10,33 @@
 
   <body>
 
-    <div id="container">
+    <div class="container">
 
-      <h1 class="text-center">Guess the Number!</h1>
+      <button class="btn btn-info" id="hint">?</button>
+      <div class="box guessBox">
+        <h1 class="text-center">Can You Guess the Number?</h1>
+        <form class="text-center">
+          <p>Guess a number between 1 and 100.</p>
+          <div class="row">
+            <div class="col-md-2 col-xs-1"></div>
+            <input class="col-md-8 col-xs-10" type="text" placeholder="Guess a Number (1-100)">
+            <div class="col-md-2 col-xs-1"></div>
+          </div>
+          <div class="row">
+            <div class="col-md-2 col-xs-1"></div>
+            <button class="col-md-8 col-xs-10 btn btn-success" id="guess">Guess</button>
+            <div class="col-md-2 col-xs-1"></div>
+          </div>
+        </form>
+      </div>
 
-      <form class="text-center">
-        <p>Guess a number between 1 and 100.</p>
-        <div class="row">
-          <input type="text" placeholder="Guess a Number (1-100)">
-        </div>
-        <div class="row">
-          <div class="col-md-4"></div>
-          <button class="col-md-4 btn btn-success" id="guess">Guess</button>
-          <div class="col-md-4"></div>
-        </div>
-      </form>
-
-      <form class="text-center row">
-        <button class="col-md-4 btn btn-info" id="tryAgain">Try Again?</button>
-        <button class="col-md-4 btn btn-warning" id="hint">Hint</button>
-        <button class="col-md-4 btn btn-danger" id="giveUp">Give Up</button>
-      </form>
+      <div class="box optionsBox row">
+        <form class="text-center">
+          <button class="col-md-5 btn btn-warning" id="tryAgain">Try Again?</button>
+          <div class="col-md-2"></div>
+          <button class="col-md-5 btn btn-danger" id="giveUp">Give Up</button>
+        </form>
+      </div>
 
     </div>
 

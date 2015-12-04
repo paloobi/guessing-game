@@ -1,0 +1,26 @@
+.box {
+  background-color: white;
+  border: 1px solid #eee;
+  width: 40%;
+  min-width: 400px;
+  margin: 60px auto;
+}
+
+.guessBox {
+  min-height: 300px;
+}
+
+.optionsBox {
+  min-height: 100px;
+  min-width: 200px;
+}
+
+input button {
+  width: 100%;
+}
+
+#hint {
+  float: right;
+  border-radius: 50%;
+  margin: 10px;
+}
