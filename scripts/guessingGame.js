@@ -11,6 +11,8 @@ function clearScreen() {
   $('.hintContent').css({'display': 'none'});
   $('.guessResult').css({'visibility': 'hidden'});  
   $('#playersGuesses span').text('None yet');
+  $('.gameOver').css({'display': 'none'});
+  $('#guessValue').val("");
 }
 
 function newGame() {
@@ -18,6 +20,7 @@ function newGame() {
   winningNumber = generateRandomNumber();
   playersGuesses = [];
   guessCount = 5;
+  clearScreen();
 }
 
 // Start a new game when the page loads
@@ -37,7 +40,7 @@ function generateRandomNumber(){
 function playersGuessSubmission(){
   playersGuess = $('input#guessValue').val();
   if (playersGuess != null) {
-    playersGuess = parseInt(playersGuess)
+    playersGuess = parseInt(playersGuess);
   }
   $('input#guessValue').val("");
 }
@@ -64,40 +67,56 @@ function digitsDiff() {
 }
 
 function gameOver(result) {
+  var text, color;
   if (result == 'win') {
-    var text = "You Win!";
-    $('.gameOver').css({'border-color': 'green'});
+    text = "You Win!";
+    color = 'green';
   } else if (result == 'lose') {
-    var text = "You Lost!";
-    $('.gameOver').css({'border-color': 'red'});
+    text = "You Lost!";
+    color = 'red';
   }
+
+  // add game over text for win or lose
+  $('.gameOver').css({'display': 'block', 'border-color': color});
   $('.gameOver h2').html(text);
   $('.gameOver p').html("The number was: " + winningNumber);
+
+
+  // clicking outside the modal will close it
+  $('html').click(function() {
+    $('.gameOver').css({'display': 'none'});
+  });
+  $('.gameOver').click(function(event){
+      event.stopPropagation();
+  });
+
 }
 
 // Check if the Player's Guess is the winning number
 // and add appropriate message to DOM
 
 function checkGuess(){
+
   $('.guessResult').css({'visibility': 'visible'});
+  var message;
 
   if (!playersGuess) {
-    var message = "Please enter a number.";
+    message = "Please enter a number.";
   } else if (playersGuess == winningNumber) {
     gameOver('win');
-    var message = 'You win! The number was ' + winningNumber + '!';
+    message = 'You win! The number was ' + winningNumber + '!';
   } else if (playersGuesses.indexOf(playersGuess) > -1) {
-    var message = "You already guessed " + playersGuess + "!";
+    message = "You already guessed " + playersGuess + "!";
   } else {
     playersGuesses.push(playersGuess);
     guessCount -= 1;
+    message = "Your guess, " + playersGuess + ", is <strong>" + lowerOrHigher() + "</strong> than the answer and <strong>within " + digitsDiff() + " digits</strong> of the winning number.";
     $('.guessCount span').html(guessCount);
-    var message = "Your guess, " + playersGuess + ", is <strong>" + lowerOrHigher() + "</strong> than the answer and <strong>within " + digitsDiff() + " digits</strong> of the winning number.";
   }
 
   if (guessCount <= 0) {
     gameOver('lose');
-    var message = "You lost! Try again?";
+    message = "You lost! Try again?";
   }
 
   if (playersGuesses.length > 0) {
@@ -134,7 +153,6 @@ function provideHint(){
 
 function playAgain(){
   newGame();
-
 }
 
 /* **** Event Listeners/Handlers ****  */
@@ -161,14 +179,12 @@ $('.hint button').click(function(e) {
   }
 });
 
-$('button#playAgain').click(function(e) {
+$('button.playAgain').click(function(e) {
   e.preventDefault();
   playAgain();
-  clearScreen();
-})
+});
 
 $('button#giveUp').click(function(e) {
   e.preventDefault();
-  clearScreen();
-  playAgain();
-})
+  gameOver('lose');
+});
