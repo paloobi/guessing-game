@@ -12,11 +12,14 @@
   <body>
 
     <div class="container">
-      <div class="winner"></div>
-
       <div class="box guessBox">
         <h1 class="text-center">Guess the Number!</h1>
         <form class="text-center">
+          <div class="row">
+            <div class="col-md-2 col-xs-1"></div>
+            <div class="col-md-8 col-xs-10 guessResult"><p></p></div>
+            <div class="col-md-2 col-xs-1"></div>
+          </div>
           <div class="row">
             <div class="col-md-2 col-xs-1"></div>
             <input class="col-md-8 col-xs-10" type="text" placeholder="Guess a Number (1-100)" id="guessValue">
@@ -25,11 +28,6 @@
           <div class="row">
             <div class="col-md-2 col-xs-1"></div>
             <button class="col-md-8 col-xs-10 btn btn-success" id="guess">Guess</button>
-            <div class="col-md-2 col-xs-1"></div>
-          </div>
-          <div class="row">
-            <div class="col-md-2 col-xs-1"></div>
-            <div class="col-md-8 col-xs-10 guessResult"><p></p></div>
             <div class="col-md-2 col-xs-1"></div>
           </div>
           <div class="row">

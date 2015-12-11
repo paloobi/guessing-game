@@ -30,7 +30,6 @@ p {
 
 h1 {
   margin-top: 60px;
-  margin-bottom: 20px;
   font-family: 'Poiret One', cursive;
 }
 
@@ -48,6 +47,11 @@ h1 {
 
 input button {
   width: 100%;
+}
+
+button#guess {
+  margin-bottom: 10px;
+
 }
 
 .guessResult, .guessCount, .hint p {
@@ -71,25 +75,10 @@ input button {
 }
 
 .guessResult {
-  display: none;
+  visibility: hidden;
+  height: 50px;
 }
 
 .hintContent {
   display: none;
-}
-
-.winner {
-  float: right;
-  -webkit-box-sizing: content-box;
-  -moz-box-sizing: content-box;
-  box-sizing: content-box;
-  width: 0;
-  height: 100px;
-  border: 50px solid #1abc9c;
-  border-top: 0 solid;
-  border-bottom: 35px solid rgba(0,0,0,0);
-  font: normal 100%/normal Arial, Helvetica, sans-serif;
-  color: rgba(0,0,0,1);
-  -o-text-overflow: clip;
-  text-overflow: clip;
 }
