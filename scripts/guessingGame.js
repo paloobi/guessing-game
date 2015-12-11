@@ -8,9 +8,8 @@ var playersGuess,
 
 function clearScreen() {
   $('.guessCount span').html(guessCount);
-  var reset = {'display': 'none'}
-  $('.hintContent').css(reset);
-  $('.guessResult').css(reset);  
+  $('.hintContent').css({'display': 'none'});
+  $('.guessResult').css({'visibility': 'hidden'});  
 }
 
 function newGame() {
@@ -86,7 +85,13 @@ function checkGuess(){
     var message = "You lost! Try again?";
   }
 
+  if (playersGuesses.length > 0) {
+    $('#playersGuesses').css({'display': 'inline'});
+    $('#playersGuesses span').text(playersGuesses.join(", "))
+  }
+
   $('.guessResult p').text(message);
+
 }
 
 // Create a provide hint button that provides additional clues to the "Player"
@@ -106,7 +111,7 @@ function provideHint(){
   }
   hints.sort(sortNumber);
 
-  $('.hintContent').css({'display': 'inline'});
+  $('.hintContent').css({'display': 'block'});
   $('.hint p').text("One of these is the winning number: " + hints.join(", ") + ".");
 
 }
