@@ -67,7 +67,7 @@ function digitsDiff() {
 // and add appropriate message to DOM
 
 function checkGuess(){
-  $('.guessResult').css({'display': 'block'});
+  $('.guessResult').css({'visibility': 'visible'});
 
   if (!playersGuess) {
     var message = "Please enter a number.";
