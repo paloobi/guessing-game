@@ -68,9 +68,11 @@ function digitsDiff() {
 function toggleModal() {
   var modal = $('.gameOver')
   if (modal.css('top') == '20px') {
-    modal.animate({'top': '-1000px'}, 'slow')
+    modal.animate({'top': '-1000px'}, 500);
+    $('.behindModal').fadeOut();
   } else {
-    modal.animate({'top': '20px'}, 'slow')
+    modal.animate({'top': '20px'}, 500)
+    $('.behindModal').fadeIn();
   }
 }
 
@@ -92,11 +94,8 @@ function gameOver(result) {
 
 
   // clicking outside the modal will close it
-  $('html').click(function() {
+  $('.behindModal').click(function() {
     toggleModal();
-  });
-  $('.gameOver').click(function(event){
-      event.stopPropagation();
   });
 
 }
