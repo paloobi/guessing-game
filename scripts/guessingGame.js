@@ -81,7 +81,6 @@ function gameOver(result) {
   $('.gameOver h2').html(text);
   $('.gameOver p').html("The number was: " + winningNumber);
 
-
   // clicking outside the modal will close it
   $('html').click(function() {
     $('.gameOver').css({'display': 'none'});
@@ -89,6 +88,7 @@ function gameOver(result) {
   $('.gameOver').click(function(event){
       event.stopPropagation();
   });
+  $('.')
 
 }
 
@@ -149,12 +149,6 @@ function provideHint(){
 
 }
 
-// Allow the "Player" to Play Again
-
-function playAgain(){
-  newGame();
-}
-
 /* **** Event Listeners/Handlers ****  */
 
 // When the guess button is clicked, the guess is saved
@@ -181,10 +175,11 @@ $('.hint button').click(function(e) {
 
 $('button.playAgain').click(function(e) {
   e.preventDefault();
-  playAgain();
+  newGame();
 });
 
 $('button#giveUp').click(function(e) {
   e.preventDefault();
+  e.stopPropagation();
   gameOver('lose');
 });
