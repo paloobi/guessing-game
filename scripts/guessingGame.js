@@ -10,6 +10,7 @@ function clearScreen() {
   $('.guessCount span').html(guessCount);
   $('.hintContent').css({'display': 'none'});
   $('.guessResult').css({'visibility': 'hidden'});  
+  $('#playersGuesses span').text('None yet');
 }
 
 function newGame() {
@@ -62,6 +63,18 @@ function digitsDiff() {
   return diff;
 }
 
+function gameOver(result) {
+  if (result == 'win') {
+    var text = "You Win!";
+    $('.gameOver').css({'border-color': 'green'});
+  } else if (result == 'lose') {
+    var text = "You Lost!";
+    $('.gameOver').css({'border-color': 'red'});
+  }
+  $('.gameOver h2').html(text);
+  $('.gameOver p').html("The number was: " + winningNumber);
+}
+
 // Check if the Player's Guess is the winning number
 // and add appropriate message to DOM
 
@@ -71,6 +84,7 @@ function checkGuess(){
   if (!playersGuess) {
     var message = "Please enter a number.";
   } else if (playersGuess == winningNumber) {
+    gameOver('win');
     var message = 'You win! The number was ' + winningNumber + '!';
   } else if (playersGuesses.indexOf(playersGuess) > -1) {
     var message = "You already guessed " + playersGuess + "!";
@@ -78,19 +92,19 @@ function checkGuess(){
     playersGuesses.push(playersGuess);
     guessCount -= 1;
     $('.guessCount span').html(guessCount);
-    var message = "Your guess, " + playersGuess + ", is " + lowerOrHigher() + " than the answer and within " + digitsDiff() + " digits of the winning number.";
+    var message = "Your guess, " + playersGuess + ", is <strong>" + lowerOrHigher() + "</strong> than the answer and <strong>within " + digitsDiff() + " digits</strong> of the winning number.";
   }
 
   if (guessCount <= 0) {
+    gameOver('lose');
     var message = "You lost! Try again?";
   }
 
   if (playersGuesses.length > 0) {
-    $('#playersGuesses').css({'display': 'inline'});
     $('#playersGuesses span').text(playersGuesses.join(", "))
   }
 
-  $('.guessResult p').text(message);
+  $('.guessResult p').html(message);
 
 }
 
@@ -142,7 +156,9 @@ $(document).keypress(function(e) {
 
 $('.hint button').click(function(e) {
   e.preventDefault();
-  provideHint();
+  if ($('.hintContent').css('display') != 'block') {
+    provideHint();
+  }
 });
 
 $('button#playAgain').click(function(e) {
@@ -154,6 +170,5 @@ $('button#playAgain').click(function(e) {
 $('button#giveUp').click(function(e) {
   e.preventDefault();
   clearScreen();
-  $('.guessResult p').text("The number was: " + winningNumber)
   playAgain();
 })

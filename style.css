@@ -28,7 +28,7 @@ p {
   padding-top: 4px;
 }
 
-h1 {
+h1, h2 {
   margin-top: 60px;
   font-family: 'Poiret One', cursive;
 }
@@ -62,19 +62,6 @@ button#guess {
   min-height: 56px;
 }
 
-@media only screen and (max-width: 993px) {
-  .hint p {
-    margin: 0 6px;
-  }
-}
-
-@media only screen and (min-width: 992px) {
-  .hint p {
-    margin: 24px 5px; 
-    min-height: 48.2833px;
-  }
-}
-
 .guessResult {
   visibility: hidden;
   height: 50px;
@@ -84,6 +71,40 @@ button#guess {
   display: none;
 }
 
-#playersGuesses {
-  display: none;
+.gameOver {
+  position: fixed;
+  z-index: 100;
+  top: 0;
+  bottom: 0;
+  left: auto;
+  right: auto;
 }
+
+/* responsive styles */
+
+@media only screen and (max-width: 993px) {
+  .hint p {
+    margin: 0 6px;
+    margin-bottom: 24px;
+  }
+  .guessCount {
+    margin-bottom: 24px;
+  }
+  .guessResult {
+    min-height: 66px;
+  }
+}
+
+@media only screen and (min-width: 992px) {
+  .hint p {
+    margin: 24px 5px; 
+    min-height: 48.2833px;
+  }
+  .guessCount {
+    margin-bottom: 24px;
+  }
+  .guessResult {
+    min-height: 66px;
+  }
+}
+
