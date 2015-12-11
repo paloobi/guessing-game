@@ -11,7 +11,6 @@ function clearScreen() {
   $('.hintContent').css({'display': 'none'});
   $('.guessResult').css({'visibility': 'hidden'});  
   $('#playersGuesses span').text('None yet');
-  $('.gameOver').css({'display': 'none'});
   $('#guessValue').val("");
 }
 
@@ -66,6 +65,15 @@ function digitsDiff() {
   return diff;
 }
 
+function toggleModal() {
+  var modal = $('.gameOver')
+  if (modal.css('top') == '20px') {
+    modal.animate({'top': '-1000px'}, 'slow')
+  } else {
+    modal.animate({'top': '20px'}, 'slow')
+  }
+}
+
 function gameOver(result) {
   var text, color;
   if (result == 'win') {
@@ -77,18 +85,19 @@ function gameOver(result) {
   }
 
   // add game over text for win or lose
-  $('.gameOver').css({'display': 'block', 'border-color': color});
   $('.gameOver h2').html(text);
   $('.gameOver p').html("The number was: " + winningNumber);
+  $('.gameOver').css({'border-color': color});
+  toggleModal();
+
 
   // clicking outside the modal will close it
   $('html').click(function() {
-    $('.gameOver').css({'display': 'none'});
+    toggleModal();
   });
   $('.gameOver').click(function(event){
       event.stopPropagation();
   });
-  $('.')
 
 }
 
@@ -175,6 +184,7 @@ $('.hint button').click(function(e) {
 
 $('button.playAgain').click(function(e) {
   e.preventDefault();
+  toggleModal();
   newGame();
 });
 
