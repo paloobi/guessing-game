@@ -5,18 +5,18 @@
 
 function GuessingGame() {
 
-  // new guessing game starting DOM
-  $('.guessCount span').html(guessCount);
-  $('.hintContent').css({'display': 'none'});
-  $('.guessResult').css({'visibility': 'hidden'});  
-  $('#playersGuesses span').text('None yet');
-  $('#guessValue').val("");
-
   // create initial variables for the game
   this.playersGuess = null;
   this.winningNumber = this.generateRandomNumber();
   this.playersGuesses = [];
   this.guessCount = 5;
+
+  // new guessing game starting DOM
+  $('.guessCount span').html(this.guessCount);
+  $('.hintContent').css({'display': 'none'});
+  $('.guessResult').css({'visibility': 'hidden'});  
+  $('#playersGuesses span').text('None yet');
+  $('#guessValue').val("");
 
 }
 
@@ -106,7 +106,7 @@ GuessingGame.prototype.checkGuess = function() {
   }
 
   // if player is out of guesses, the game ends
-  if (guessCount <= 0) {
+  if (this.guessCount <= 0) {
     this.gameOver('lose');
     message = "You lost! Try again?";
   }
@@ -167,42 +167,42 @@ GuessingGame.prototype.gameOver = function(result) {
 
 /* *** start a new game when the page is loaded *** */
 
-$(document).ready(
+$(document).ready( function() {
   game = new GuessingGame();
-);
 
-/* **** Event Listeners/Handlers ****  */
+  /* **** Event Listeners/Handlers ****  */
 
-// When the guess button is clicked, the guess is saved
-$('button#guess').click(function(e) {
-  e.preventDefault();
-  game.playersGuessSubmission();
-  game.checkGuess();
-});
-
-$(document).keypress(function(e) {
-  if (e.keyCode == 13) {
+  // When the guess button is clicked, the guess is saved
+  $('button#guess').click(function(e) {
     e.preventDefault();
     game.playersGuessSubmission();
     game.checkGuess();
-  }
-});
+  });
 
-$('.hint button').click(function(e) {
-  e.preventDefault();
-  if ($('.hintContent').css('display') != 'block') {
-    game.provideHint();
-  }
-});
+  $(document).keypress(function(e) {
+    if (e.keyCode == 13) {
+      e.preventDefault();
+      game.playersGuessSubmission();
+      game.checkGuess();
+    }
+  });
 
-$('button.playAgain').click(function(e) {
-  e.preventDefault();
-  game.toggleModal();
-  game = new GuessingGame();
-});
+  $('.hint button').click(function(e) {
+    e.preventDefault();
+    if ($('.hintContent').css('display') != 'block') {
+      game.provideHint();
+    }
+  });
 
-$('button#giveUp').click(function(e) {
-  e.preventDefault();
-  e.stopPropagation();
-  game.gameOver('lose');
+  $('button.playAgain').click(function(e) {
+    e.preventDefault();
+    game = new GuessingGame();
+  });
+
+  $('button#giveUp').click(function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    game.gameOver('lose');
+  });
+
 });
