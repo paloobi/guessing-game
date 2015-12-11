@@ -1,62 +1,66 @@
 /* **** Global Variables **** */
 // try to elminate these global variables in your project, these are here just to start.
 
-var playersGuess,
-  winningNumber,
-  playersGuesses,
-  guessCount;
+/* **** Guessing Game Constructor **** */
 
-function clearScreen() {
+function GuessingGame() {
+
+  // new guessing game starting DOM
   $('.guessCount span').html(guessCount);
   $('.hintContent').css({'display': 'none'});
   $('.guessResult').css({'visibility': 'hidden'});  
   $('#playersGuesses span').text('None yet');
   $('#guessValue').val("");
+
+  // create initial variables for the game
+  this.playersGuess = null;
+  this.winningNumber = this.generateRandomNumber();
+  this.playersGuesses = [];
+  this.guessCount = 5;
+
 }
 
-function newGame() {
-  playersGuess = null;
-  winningNumber = generateRandomNumber();
-  playersGuesses = [];
-  guessCount = 5;
-  clearScreen();
-}
+/* **** Guessing Game Prototype with Functions **** */
 
-// Start a new game when the page loads
-$(document).ready(newGame);
-
-/* **** Guessing Game Functions **** */
-
-// Generate the Winning Number
-
-function generateRandomNumber(){
-  // returns a random number between 1 and 100
+// Generate the Winning Number, between 1 and 100
+GuessingGame.prototype.generateRandomNumber = function(){
   return Math.floor(Math.random() * 100);
 }
 
-// Fetch the Players Guess
-
-function playersGuessSubmission(){
-  playersGuess = $('input#guessValue').val();
+// get a guess from the player
+GuessingGame.prototype.playersGuessSubmission = function() {
+  var playersGuess = $('input#guessValue').val();
   if (playersGuess != null) {
-    playersGuess = parseInt(playersGuess);
+    this.playersGuess = parseInt(playersGuess);
   }
   $('input#guessValue').val("");
 }
 
-// Determine if the guess was too high or too low
-function lowerOrHigher(){
-  if (playersGuess > winningNumber) {
-    result = "higher"
-  } else if (playersGuess < winningNumber) {
-    result = "lower";
+// Create a provide hint button that provides additional clues to the "Player"
+GuessingGame.prototype.provideHint = function() {
+
+  // create list of numbers for the hint
+  var hints = [];
+  var i = 0;
+  while ( i < 2 ) {
+    hints.push(this.generateRandomNumber());
+    i++;
   }
-  return result;
+  hints.push(this.winningNumber);
+
+  // numerically sort the list of numbers for the hint
+  function sortNumber(a,b) { return a - b; }
+  hints.sort(sortNumber);
+
+  // display the hint
+  $('.hintContent').css({'display': 'block'});
+  $('.hint p').text("One of these is the winning number: " + hints.join(", ") + ".");
 }
 
-// determine how many digits away the guess is from the answer
-function digitsDiff() {
-  var diff = Math.abs(playersGuess - winningNumber);
+
+// helper function to determine # of digits guess is from answer
+GuessingGame.prototype.digitsDiff = function() {
+  var diff = Math.abs(this.playersGuess - this.winningNumber);
   if (diff <= 5) {
     diff = 5;
   } else {
@@ -65,19 +69,81 @@ function digitsDiff() {
   return diff;
 }
 
-function toggleModal() {
-  var modal = $('.gameOver')
+// helper function to determine if the guess was too high or too low
+GuessingGame.prototype.lowerOrHigher = function() {
+  var result;
+  if (this.playersGuess > this.winningNumber) {
+    result = "higher"
+  } else if (this.playersGuess < this.winningNumber) {
+    result = "lower";
+  }
+  return result;
+}
+
+// Check if the Player's Guess is the winning number
+// and add appropriate message to DOM
+GuessingGame.prototype.checkGuess = function() {
+
+  // instantiate the message var. that will be used to show Guess result
+  var message;
+
+  // create the message to display
+  if (!this.playersGuess) {
+    message = "Please enter a number.";
+  } else if (this.playersGuess == this.winningNumber) {
+    this.gameOver('win');
+    message = 'You win! The number was ' + this.winningNumber + '!';
+  } else if (this.playersGuesses.indexOf(this.playersGuess) > -1) {
+    message = "You already guessed " + this.playersGuess + "!";
+  } else {
+    // add to list of guesses made
+    this.playersGuesses.push(this.playersGuess);
+    // reduce guesses left
+    this.guessCount -= 1;
+    message = "Your guess, " + this.playersGuess + ", is <strong>" + this.lowerOrHigher() + "</strong> than the answer and <strong>within " + this.digitsDiff() + " digits</strong> of the winning number.";
+    // update number of guesses left in DOM
+    $('.guessCount span').html(this.guessCount);
+  }
+
+  // if player is out of guesses, the game ends
+  if (guessCount <= 0) {
+    this.gameOver('lose');
+    message = "You lost! Try again?";
+  }
+
+  // display guesses made in the DOM
+  if (this.playersGuesses.length > 0) {
+    $('#playersGuesses span').text(this.playersGuesses.join(", "))
+  }
+
+  // display the Guess Result in the DOM
+  $('.guessResult').css({'visibility': 'visible'});
+  $('.guessResult p').html(message);
+
+}
+
+// Add or remove the gameover modal
+GuessingGame.prototype.toggleModal = function() {
+  // grab modal from DOM
+  var modal = $('.gameOver');
+
+  // if modal is on screen, move it off screen 
   if (modal.css('top') == '20px') {
     modal.animate({'top': '-1000px'}, 500);
     $('.behindModal').fadeOut();
+
+  // otherwise, move the modal onscreen
   } else {
     modal.animate({'top': '20px'}, 500)
     $('.behindModal').fadeIn();
   }
 }
 
-function gameOver(result) {
+// define action to take for win or lose
+GuessingGame.prototype.gameOver = function(result) {
   var text, color;
+
+  // define text and border color to display in modal
   if (result == 'win') {
     text = "You Win!";
     color = 'green';
@@ -88,107 +154,55 @@ function gameOver(result) {
 
   // add game over text for win or lose
   $('.gameOver h2').html(text);
-  $('.gameOver p').html("The number was: " + winningNumber);
+  $('.gameOver p').html("The number was: " + this.winningNumber);
   $('.gameOver').css({'border-color': color});
-  toggleModal();
+  this.toggleModal();
 
-
-  // clicking outside the modal will close it
+  // clicking outside the modal will remove the modal
   $('.behindModal').click(function() {
-    toggleModal();
+    this.toggleModal();
   });
 
 }
 
-// Check if the Player's Guess is the winning number
-// and add appropriate message to DOM
+/* *** start a new game when the page is loaded *** */
 
-function checkGuess(){
-
-  $('.guessResult').css({'visibility': 'visible'});
-  var message;
-
-  if (!playersGuess) {
-    message = "Please enter a number.";
-  } else if (playersGuess == winningNumber) {
-    gameOver('win');
-    message = 'You win! The number was ' + winningNumber + '!';
-  } else if (playersGuesses.indexOf(playersGuess) > -1) {
-    message = "You already guessed " + playersGuess + "!";
-  } else {
-    playersGuesses.push(playersGuess);
-    guessCount -= 1;
-    message = "Your guess, " + playersGuess + ", is <strong>" + lowerOrHigher() + "</strong> than the answer and <strong>within " + digitsDiff() + " digits</strong> of the winning number.";
-    $('.guessCount span').html(guessCount);
-  }
-
-  if (guessCount <= 0) {
-    gameOver('lose');
-    message = "You lost! Try again?";
-  }
-
-  if (playersGuesses.length > 0) {
-    $('#playersGuesses span').text(playersGuesses.join(", "))
-  }
-
-  $('.guessResult p').html(message);
-
-}
-
-// Create a provide hint button that provides additional clues to the "Player"
-
-function provideHint(){
-  
-  var hints = [];
-  var i = 0;
-  while ( i < 2 ) {
-    hints.push(generateRandomNumber());
-    i++;
-  }
-  hints.push(winningNumber);
-
-  function sortNumber(a,b) {
-      return a - b;
-  }
-  hints.sort(sortNumber);
-
-  $('.hintContent').css({'display': 'block'});
-  $('.hint p').text("One of these is the winning number: " + hints.join(", ") + ".");
-
-}
+$(document).ready(
+  game = new GuessingGame();
+);
 
 /* **** Event Listeners/Handlers ****  */
 
 // When the guess button is clicked, the guess is saved
 $('button#guess').click(function(e) {
   e.preventDefault();
-  playersGuessSubmission();
-  checkGuess();
+  game.playersGuessSubmission();
+  game.checkGuess();
 });
 
 $(document).keypress(function(e) {
   if (e.keyCode == 13) {
     e.preventDefault();
-    playersGuessSubmission();
-    checkGuess();
+    game.playersGuessSubmission();
+    game.checkGuess();
   }
 });
 
 $('.hint button').click(function(e) {
   e.preventDefault();
   if ($('.hintContent').css('display') != 'block') {
-    provideHint();
+    game.provideHint();
   }
 });
 
 $('button.playAgain').click(function(e) {
   e.preventDefault();
-  toggleModal();
-  newGame();
+  game.toggleModal();
+  game = new GuessingGame();
 });
 
 $('button#giveUp').click(function(e) {
   e.preventDefault();
   e.stopPropagation();
-  gameOver('lose');
+  game.gameOver('lose');
 });
