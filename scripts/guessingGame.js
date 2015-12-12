@@ -108,7 +108,7 @@ GuessingGame.prototype.checkGuess = function() {
   // if player is out of guesses, the game ends
   if (this.guessCount <= 0) {
     this.gameOver('lose');
-    message = "You lost! Try again?";
+    message = "You lost! Click <strong>New Game</strong> to try again.";
   }
 
   // display guesses made in the DOM
