@@ -108,7 +108,7 @@ GuessingGame.prototype.checkGuess = function() {
   // if player is out of guesses, the game ends
   if (this.guessCount <= 0) {
     this.gameOver('lose');
-    message = "You lost! Try again?";
+    message = "You lost! Click <strong>New Game</strong> to try again.";
   }
 
   // display guesses made in the DOM
@@ -158,9 +158,10 @@ GuessingGame.prototype.gameOver = function(result) {
   $('.gameOver').css({'border-color': color});
   this.toggleModal();
 
+  var that = this;
   // clicking outside the modal will remove the modal
   $('.behindModal').click(function() {
-    this.toggleModal();
+    that.toggleModal();
   });
 
 }
