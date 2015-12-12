@@ -158,9 +158,10 @@ GuessingGame.prototype.gameOver = function(result) {
   $('.gameOver').css({'border-color': color});
   this.toggleModal();
 
+  var that = this;
   // clicking outside the modal will remove the modal
   $('.behindModal').click(function() {
-    this.toggleModal();
+    that.toggleModal();
   });
 
 }
