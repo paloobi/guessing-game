@@ -196,6 +196,7 @@
   
     $('button.playAgain').click(function(e) {
       e.preventDefault();
+      game.toggleModal();
       game = new GuessingGame();
     });
   
